@@ -1,12 +1,17 @@
 #!/bin/bash
-find $1 -maxdepth 1 -type f -name "*$2" 1> temp 2> /dev/null
-if [ $? -eq 0 ]
+set -o pipefail
+
+if [ -z "$1" ]
 then
-	wc -l <temp
-	if [ $? -ne 0 ]
-	then
-		exit -1
-	fi
-else
+	echo "Usage: $0 path_name [extension]"
 	exit -1
+fi
+
+find $1 -maxdepth 1 -type f -name "*$2" | wc -l
+
+if [ $? -ne 0 ]
+then
+	exit -1
+else
+	exit 0
 fi
