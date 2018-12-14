@@ -1,9 +1,21 @@
 #!/bin/bash
 set -o pipefail
 
-if [ -z "$1" ]
+if [ $# -lt 1 -o $# -gt 2 ]
 then
 	echo "Usage: $0 path_name [extension]"
+	exit 1
+elif [ ! -d $1 ]
+then
+	echo "$1 is not a valid directory"
+	exit 1
+elif [ ! -r $1 ]
+then
+	echo "Unable to read $1"
+	exit 1
+elif [ $# -eq 2 ] && [[ ! $2 =~ ^\. ]]
+then
+	echo 'Extensions begin with .'
 	exit 1
 fi
 
