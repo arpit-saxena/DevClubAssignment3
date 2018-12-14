@@ -8,15 +8,26 @@ fi
 function sync()
 {
 	IFS=$'\n'
-	echo "Files copied from $1 to $2 are:"
 
 	local dir1=$( realpath $1 )
 	local dir2=$( realpath $2 )
 
+	#Syncing directory structure
+	echo "Directories created in $dir2 are:"
+	for dname in $( find "$dir1" -type d | sed -E "s@$dir1/?@@g" | tail -n +2  ); do
+		local destdir="$dir2/$dname"
+		if ! [ -d "$destdir" ]; then
+			mkdir "$destdir"
+			echo "$dname"
+		fi
+	done
+
+	#Syncing files
+	echo "Files copied from $1 to $2 are:"
 	for filename in $( find "$dir1" -type f | sed -E "s@^$dir1/@@g" ); do
 		local tempdir=$(dirname $filename)
 
-		if [ tempdir = '.' ]; then
+		if [ $tempdir = '.' ]; then
 			local destdir="$dir2"
 		else
 			local destdir="${dir2}/$tempdir"
