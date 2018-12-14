@@ -15,5 +15,6 @@ do
 	operator=$(echo "$line" | sed -nE 's/.*([-+\*\/]).*/\1/p')	
 	ans=$(( $ans $operator $number ))	
 done < "$1"
+unset IFS
 
 echo $ans
