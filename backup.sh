@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ -z $2 ]; then
+if [ $# -ne 2 ]; then
 	echo "Usage: $0 path/to/dir1 path/to/dir2"
 	exit 1
 fi
@@ -40,6 +40,14 @@ function sync()
 	done
 	unset IFS
 }
+
+if [ ! -d $1 ]; then
+	echo "Directory $1 not found"
+	exit 1
+elif [ ! -d $2 ]; then
+	echo "Directory $2 not found"
+	exit 1
+fi
 
 sync $1 $2
 sync $2 $1
