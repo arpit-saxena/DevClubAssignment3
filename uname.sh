@@ -3,7 +3,7 @@
 if [ -z $2 ]
 then
 	echo "Usage: $0 filename username"
-	exit -1
+	exit 1
 fi
 
 #format: root:x:0:0:root:/root:/bin/bash
